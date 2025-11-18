@@ -54,8 +54,10 @@ locust -f locustfile.py
 Go to http://localhost:8089.
 Target Host: http://localhost:8000.
 Simulate 50 users / 5 spawn rate.
+
 ⚡ Phase 2: Optimized Architecture
 This phase introduces advanced techniques to reduce latency and increase RPS.
+
 1. Quantize the Model
 Run the optimization script to download the Hugging Face model, export it to ONNX, and apply INT8 quantization.
 python optimize_model.py
@@ -71,37 +73,5 @@ uvicorn advanced_main:app --host 0.0.0.0 --port 8000
 Use the specialized load test that sends batch requests and repeats sentences to trigger cache hits.
 locust -f benchmark_v2.py
 
-
-📈 Performance Results
-Metric
-Baseline (Phase 1)
-Optimized (Phase 2)
-Improvement
-Model Size
-~300 MB
-~75 MB
--75%
-Cold Start
-~2.5s
-~0.8s
-3x Faster
-Inference (P95)
-~150ms
-~40ms
-~3.7x Faster
-Throughput
-~10-15 RPS
-~500+ RPS
-Massive Gain
-
-Note: Throughput gains are heavily driven by Batching + Redis Cache hits.
-📂 Project Structure
-.
-├── main.py              # Phase 1: Baseline API
-├── locustfile.py        # Phase 1: Standard Load Test
-├── optimize_model.py    # Utility: Converts PyTorch -> ONNX INT8
-├── advanced_main.py     # Phase 2: Optimized API (Batching + Redis + ONNX)
-├── benchmark_v2.py      # Phase 2: Batch/Cache Load Test
-└── onnx_models/         # Generated artifacts (Gitignored)
 
 
